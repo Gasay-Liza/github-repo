@@ -1,0 +1,15 @@
+// SearchInput.module.scss
+
+.searchInput {
+  &::placeholder {
+    color: rgba(0, 0, 0, 0.87);
+    font-feature-settings: "clig" off, "liga" off;
+    /* components/table-header */
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px; /* 171.429% */
+    letter-spacing: 0.17px;
+  }
+}
