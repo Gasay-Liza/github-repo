@@ -1,9 +1,11 @@
 import React from "react";
 import { Button, AppBar, Toolbar, Container} from "@mui/material";
-import SearchInput from "../SearchInput/SearchInput";
-
 // Создаем свою тему
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import SearchInput from "../SearchInput/SearchInput";
+
+
+
 const theme = createTheme({
   palette: {
     secondary: {
@@ -12,8 +14,7 @@ const theme = createTheme({
   },
 });
 
-function Header() {
-  return (
+const Header = () => (
     <ThemeProvider theme={theme}>
       <AppBar position="fixed" color="secondary">
         <Container maxWidth="lg" sx={{ pt: "19px", pb:"19px"}}>
@@ -23,7 +24,6 @@ function Header() {
               variant="contained"
               color="primary"
               size="large"
-              elevation={2}
             >
               Искать
             </Button>
@@ -32,6 +32,5 @@ function Header() {
       </AppBar>
     </ThemeProvider>
   );
-}
 
 export default Header;

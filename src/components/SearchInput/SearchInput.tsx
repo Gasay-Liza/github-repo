@@ -3,8 +3,7 @@ import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import styles from "./SearchInput.module.scss";
 
-function SearchInput() {
-  return (
+const SearchInput = () => (
     <Paper
       
       component="form"
@@ -24,6 +23,5 @@ function SearchInput() {
       />
     </Paper>
   );
-}
 
 export default SearchInput;
