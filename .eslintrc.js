@@ -24,13 +24,6 @@ module.exports = {
     rules: {
       '@typescript-eslint/no-shadow': 0,
       'consistent-return': 0,
-      'react/function-component-definition': [
-        2,
-        {
-          namedComponents: 'arrow-function',
-          unnamedComponents: 'arrow-function'
-        }
-      ],
       'import/prefer-default-export': 0,
       'react/jsx-props-no-spreading': 0,
       'react/require-default-props': 0,

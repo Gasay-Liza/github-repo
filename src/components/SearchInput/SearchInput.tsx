@@ -3,9 +3,9 @@ import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import styles from "./SearchInput.module.scss";
 
-const SearchInput = () => (
+function SearchInput() { 
+  return (
     <Paper
-      
       component="form"
       sx={{
         display: "flex",
@@ -22,6 +22,6 @@ const SearchInput = () => (
         inputProps={{ "aria-label": "Введите поисковый запрос" }}
       />
     </Paper>
-  );
-
+  );}
+  
 export default SearchInput;

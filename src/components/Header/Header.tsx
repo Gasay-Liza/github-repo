@@ -3,7 +3,7 @@ import { Button, AppBar, Toolbar, Container} from "@mui/material";
 // Создаем свою тему
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import SearchInput from "../SearchInput/SearchInput";
-
+// import styles from "./Header.module.scss";
 
 
 const theme = createTheme({
@@ -14,9 +14,9 @@ const theme = createTheme({
   },
 });
 
-const Header = () => (
-    <ThemeProvider theme={theme}>
-      <AppBar position="fixed" color="secondary">
+function Header () { 
+  return ( <ThemeProvider theme={theme}>
+      <AppBar color="secondary" position="static">
         <Container maxWidth="lg" sx={{ pt: "19px", pb:"19px"}}>
           <Toolbar variant="dense">
             <SearchInput />
@@ -32,5 +32,6 @@ const Header = () => (
       </AppBar>
     </ThemeProvider>
   );
+}
 
 export default Header;
