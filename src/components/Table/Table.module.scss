@@ -1,18 +1,26 @@
 .table {
-  display: flex;
-  flex-direction: column;
+  max-width: 960px;
 }
 
 .wrapper {
-  border-radius: 0;
-  box-shadow: none;
-}
-
-.tableWrapper {
+  min-height: calc(100vh - 112px);
+  padding:  0 0;
   width: 100%;
   max-width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   background: #f2f2f2;
+}
+
+.tableWrapper {
+  min-height: calc(100vh - 112px);
+  padding: 0 32px 0 16px;
+  max-width: 960px;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.circularProgress{
+
 }

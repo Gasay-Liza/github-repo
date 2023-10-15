@@ -3,7 +3,7 @@ import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import styles from "./SearchInput.module.scss";
 
-function SearchInput() { 
+function SearchInput() {
   return (
     <Paper
       component="form"
@@ -22,6 +22,7 @@ function SearchInput() {
         inputProps={{ "aria-label": "Введите поисковый запрос" }}
       />
     </Paper>
-  );}
-  
+  );
+}
+
 export default SearchInput;
