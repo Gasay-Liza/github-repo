@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import repositoriesReducer from './repositoriesSlice';
+import paginationReducer from './paginationSlice';
 
 export const store = configureStore({
     reducer: {
-        repositories: repositoriesReducer,
+        data: repositoriesReducer,
+        pagination: paginationReducer,
       },
 });
 

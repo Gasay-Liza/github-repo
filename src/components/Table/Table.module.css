@@ -21,9 +21,6 @@
   box-shadow: none;
 }
 
-.circularProgress {
-}
-
 .container {
   width: 100%;
   max-width: 100%;
@@ -31,15 +28,13 @@
   justify-content: center;
   align-items: center;
   min-height: calc(100vh - 112px);
-  color: var(--4-f-4-f-4-f, #4f4f4f);
+  color: var(--4-f-4-f-4-f, #4F4F4F);
   text-align: center;
-  font-feature-settings:
-    "clig" off,
-    "liga" off;
+  font-feature-settings: "clig" off, "liga" off;
   font-family: Roboto;
   font-size: 46px;
   font-style: normal;
   font-weight: 400;
   line-height: 143%;
   letter-spacing: 0.17px;
-}
+}/*# sourceMappingURL=Table.module.css.map */

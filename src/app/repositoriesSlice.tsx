@@ -1,33 +1,60 @@
 import {createSlice, PayloadAction, createAsyncThunk} from "@reduxjs/toolkit";
 
+
+
+// const page = useSelector((state: RootState) => state.pagination.page);
+// const rowsPerPage = useSelector((state: RootState) => state.pagination.rowsPerPage);
 const GITHUB_TOKEN = process.env.REACT_APP_GITHUB_TOKEN;
 
-interface IRepository {
-  node: {name: string,
-  primaryLanguage: {
-    name: string
+interface IPrimaryLanguage {
+  name: string;
+}
+
+export interface INode {
+  name: string;
+  primaryLanguage: IPrimaryLanguage | null;
+  forkCount: number;
+  stargazerCount: number;
+  updatedAt: string;
+}
+
+export interface IEdge {
+  node: INode;
+}
+
+export interface IRepository {
+  pageInfo: {
+    startCursor: string;
+    hasNextPage: boolean;
+    endCursor: string;
   },
-  forkCount: number,
-  stargazerCount: number,
-  updatedAt: string
-}};
+  edges: IEdge[];
+}
 
-interface IRepositoriesState {
-  data: IRepository[],
-  loading: boolean,
-  error: string | null,
-};
+export interface IRepositoriesState {
+  data: IRepository | null;
+  loading: boolean;
+  error: string | null;
+}
 
-const initialState: IRepositoriesState = {
-  data: [],
+export const initialState: IRepositoriesState = {
+  data: null,
   loading: false,
   error: null,
 };
 
-// GraphQL запрос
+
+
+// GraphQL запрос на получение данных
 const query = `
 query {
-  search(type: REPOSITORY, query: "stars:>1", first: 10) {
+  search(type: REPOSITORY, query: "stars:>1", last: 10) {
+    repositoryCount,
+    pageInfo {
+      startCursor
+      hasNextPage
+      endCursor
+    },
     edges {
       node {
         ... on Repository {
@@ -40,12 +67,13 @@ query {
           updatedAt
         }
       }
+      
     }
   }
 }
 `;
 
-export const fetchPublicRepositories = createAsyncThunk<IRepository[], void, { rejectValue:string } >(
+export const fetchPublicRepositories = createAsyncThunk<IRepository, void, { rejectValue:string } >(
     'repositories/fetchPublicRepositories',
     async (_, { rejectWithValue }) => {
       try {
@@ -60,9 +88,7 @@ export const fetchPublicRepositories = createAsyncThunk<IRepository[], void, { r
       })
       const data = await res.json();
       if (res.ok) {
-        console.log("data", data);
-        console.log("data.data", data.data);
-        return data.data.search.edges;
+        return data.data.search;
       }} catch (err: any) {
           return rejectWithValue(err.message);
         }
@@ -70,9 +96,10 @@ export const fetchPublicRepositories = createAsyncThunk<IRepository[], void, { r
   );
 
   const repositoriesSlice = createSlice({
-    name: 'repositories',
+    name: 'data',
     initialState,
-    reducers: {},
+    reducers: {
+    },
     extraReducers: (builder) => {
       /* eslint-disable no-param-reassign */
       builder
@@ -80,7 +107,7 @@ export const fetchPublicRepositories = createAsyncThunk<IRepository[], void, { r
           state.loading = true;
           state.error = null;
         })
-        .addCase(fetchPublicRepositories.fulfilled, (state, action: PayloadAction<IRepository[]>) => {
+        .addCase(fetchPublicRepositories.fulfilled, (state, action: PayloadAction<IRepository>) => {
           state.loading = false;
           state.data = action.payload;
         })

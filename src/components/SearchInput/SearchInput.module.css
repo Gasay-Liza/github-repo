@@ -1,0 +1,22 @@
+.searchInput ::-moz-placeholder {
+  color: rgba(0, 0, 0, 0.87);
+  font-feature-settings: "clig" off, "liga" off;
+  /* components/table-header */
+  font-family: Roboto;
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 24px; /* 171.429% */
+  letter-spacing: 0.17px;
+}
+.searchInput ::placeholder {
+  color: rgba(0, 0, 0, 0.87);
+  font-feature-settings: "clig" off, "liga" off;
+  /* components/table-header */
+  font-family: Roboto;
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 24px; /* 171.429% */
+  letter-spacing: 0.17px;
+}/*# sourceMappingURL=SearchInput.module.css.map */
