@@ -27,7 +27,7 @@ console.log(data )
 console.log(data)
 console.log(typeof data);
 useEffect(() => {
-      dispatch(fetchPublicRepositories());
+      dispatch(fetchPublicRepositories({ first: 10, after:data?.pageInfo.endCursor }));
     }, [dispatch]);
     
     if (loading) {

@@ -43,12 +43,15 @@ export const initialState: IRepositoriesState = {
   error: null,
 };
 
-
+interface QueryVariables {
+  first: number;
+  after?: string;
+}
 
 // GraphQL запрос на получение данных
 const query = `
-query {
-  search(type: REPOSITORY, query: "stars:>1", last: 10) {
+query ($first: Int, $after: String){
+  search(type: REPOSITORY, query: "stars:>1", first: $first, after: $after) {
     repositoryCount,
     pageInfo {
       startCursor
@@ -73,9 +76,9 @@ query {
 }
 `;
 
-export const fetchPublicRepositories = createAsyncThunk<IRepository, void, { rejectValue:string } >(
+export const fetchPublicRepositories = createAsyncThunk<IRepository, QueryVariables | void, { rejectValue:string } >(
     'repositories/fetchPublicRepositories',
-    async (_, { rejectWithValue }) => {
+    async (variables, { rejectWithValue }) => {
       try {
       const res = await fetch('https://api.github.com/graphql', {
         method: 'POST',
@@ -84,7 +87,7 @@ export const fetchPublicRepositories = createAsyncThunk<IRepository, void, { rej
           'Accept': 'application/json',
           'Authorization': `Bearer ${GITHUB_TOKEN}`
         },
-        body: JSON.stringify({ query})
+        body: JSON.stringify({ query, variables })
       })
       const data = await res.json();
       if (res.ok) {
