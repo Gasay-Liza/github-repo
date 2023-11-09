@@ -84,5 +84,3 @@ useEffect(() => {
     </StyledEngineProvider>
   );
 }
-
-// ц

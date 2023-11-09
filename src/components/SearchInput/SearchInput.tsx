@@ -3,7 +3,8 @@ import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import styles from "./SearchInput.module.scss";
 
-function SearchInput() {
+
+function SearchInput() : JSX.Element {
   return (
     <Paper
       component="form"
@@ -20,6 +21,8 @@ function SearchInput() {
         sx={{ ml: 2, flex: 1 }}
         placeholder="Введите поисковый запрос"
         inputProps={{ "aria-label": "Введите поисковый запрос" }}
+        onChange={onChange}
+        value={value}
       />
     </Paper>
   );

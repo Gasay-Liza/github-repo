@@ -33,6 +33,7 @@ export interface IRepository {
 }
 
 export interface IRepositoriesState {
+  searchTerm: string | null,
   data: IRepository | null;
   loading: boolean;
   error: string | null;
@@ -42,6 +43,7 @@ export interface IRepositoriesState {
 }
 
 export const initialState: IRepositoriesState = {
+  searchTerm: null,
   data: null,
   loading: false,
   error: null,
@@ -53,12 +55,13 @@ export const initialState: IRepositoriesState = {
 interface QueryVariables {
   first: number;
   after?: string;
+  query: string;
 }
 
 // GraphQL запрос на получение данных
 const query = `
-query ($first: Int, $after: String){
-  search(type: REPOSITORY, query: "stars:>1", first: $first, after: $after) {
+query ($first: Int, $after: String, $query: String){
+  search(type: REPOSITORY, query: $query, first: $first, after: $after) {
     repositoryCount,
     pageInfo {
       startCursor
@@ -110,6 +113,9 @@ const repositoriesSlice = createSlice({
   name: 'data',
   initialState,
   reducers: {
+    setSearchTerm: (state, action: PayloadAction<string>) => {
+      state.searchTerm = action.payload;
+    },
     setEndCursor: (state, action: PayloadAction<IRepository>) => {
       state.endCursor = action.payload.pageInfo.endCursor;
     },
@@ -140,6 +146,7 @@ const repositoriesSlice = createSlice({
           state.error = payload;
         }
       });
+      
   },
   /* eslint-enable no-param-reassign */
 });

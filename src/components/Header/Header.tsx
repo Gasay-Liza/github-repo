@@ -3,8 +3,25 @@ import { Button, AppBar, Toolbar } from "@mui/material";
 import { StyledEngineProvider } from "@mui/material/styles";
 import SearchInput from "../SearchInput/SearchInput";
 import styles from "./Header.module.scss";
+import { useAppDispatch } from '../../app/hooks';
 
 function Header() {
+
+  const dispatch = useAppDispatch();
+  
+  const [inputValue, setInputValue] = useState('');
+  
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  }
+  
+  const handleSearchClick = () => {
+    // Выполняется действие поиска, обновляя состояние Redux, чтобы отобразить результаты поиска
+    dispatch(repositoriesSlice.actions.setSearchTerm(inputValue));
+  }
+
+
+
   return (
     <StyledEngineProvider injectFirst>
       <AppBar color="secondary" position="static" className={styles.header}>
