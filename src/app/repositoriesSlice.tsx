@@ -1,10 +1,10 @@
-import {createSlice, PayloadAction, createAsyncThunk} from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
 
 
 // const page = useSelector((state: RootState) => state.pagination.page);
 // const rowsPerPage = useSelector((state: RootState) => state.pagination.rowsPerPage);
-const GITHUB_TOKEN = process.env.REACT_APP_GITHUB_TOKEN;
+const GITHUB_TOKEN = "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";
 
 interface IPrimaryLanguage {
   name: string;
@@ -23,6 +23,7 @@ export interface IEdge {
 }
 
 export interface IRepository {
+  repositoryCount: number | null;
   pageInfo: {
     startCursor: string;
     hasNextPage: boolean;
@@ -35,12 +36,18 @@ export interface IRepositoriesState {
   data: IRepository | null;
   loading: boolean;
   error: string | null;
+  endCursor: string | null;
+  startCursor: string | null,
+  hasNextPage: boolean | null,
 }
 
 export const initialState: IRepositoriesState = {
   data: null,
   loading: false,
   error: null,
+  endCursor: null,
+  startCursor: null,
+  hasNextPage: false,
 };
 
 interface QueryVariables {
@@ -76,10 +83,10 @@ query ($first: Int, $after: String){
 }
 `;
 
-export const fetchPublicRepositories = createAsyncThunk<IRepository, QueryVariables | void, { rejectValue:string } >(
-    'repositories/fetchPublicRepositories',
-    async (variables, { rejectWithValue }) => {
-      try {
+export const fetchPublicRepositories = createAsyncThunk<IRepository, QueryVariables | void, { rejectValue: string }>(
+  'repositories/fetchPublicRepositories',
+  async (variables, { rejectWithValue }) => {
+    try {
       const res = await fetch('https://api.github.com/graphql', {
         method: 'POST',
         headers: {
@@ -92,35 +99,53 @@ export const fetchPublicRepositories = createAsyncThunk<IRepository, QueryVariab
       const data = await res.json();
       if (res.ok) {
         return data.data.search;
-      }} catch (err: any) {
-          return rejectWithValue(err.message);
-        }
+      }
+    } catch (err: any) {
+      return rejectWithValue(err.message);
     }
-  );
+  }
+);
 
-  const repositoriesSlice = createSlice({
-    name: 'data',
-    initialState,
-    reducers: {
+const repositoriesSlice = createSlice({
+  name: 'data',
+  initialState,
+  reducers: {
+    setEndCursor: (state, action: PayloadAction<IRepository>) => {
+      state.endCursor = action.payload.pageInfo.endCursor;
     },
-    extraReducers: (builder) => {
-      /* eslint-disable no-param-reassign */
-      builder
-        .addCase(fetchPublicRepositories.pending, (state) => {
-          state.loading = true;
-          state.error = null;
-        })
-        .addCase(fetchPublicRepositories.fulfilled, (state, action: PayloadAction<IRepository>) => {
+    setHasNextPage: (state, action: PayloadAction<IRepository>) => {
+      state.hasNextPage = action.payload.pageInfo.hasNextPage;
+    },
+    setStartCursor: (state, action: PayloadAction<IRepository>) => {
+      state.startCursor = action.payload.pageInfo.startCursor;
+    },
+  },
+  extraReducers: (builder) => {
+    /* eslint-disable no-param-reassign */
+    builder
+      .addCase(fetchPublicRepositories.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchPublicRepositories.fulfilled, (state, action: PayloadAction<IRepository>) => {
+        state.loading = false;
+        state.data = action.payload;
+        state.hasNextPage = action.payload.pageInfo.hasNextPage;
+        state.startCursor = action.payload.pageInfo.startCursor;
+        state.endCursor = action.payload.pageInfo.endCursor;
+      })
+      .addCase(fetchPublicRepositories.rejected, (state, { payload }) => {
+        if (payload) {
           state.loading = false;
-          state.data = action.payload;
-        })
-        .addCase(fetchPublicRepositories.rejected, (state, { payload }) => {
-          if (payload) {
-            state.loading = false;
-            state.error = payload;
-        }});
-    },
-    /* eslint-enable no-param-reassign */
-  });
-  
-  export default repositoriesSlice.reducer;
+          state.error = payload;
+        }
+      });
+  },
+  /* eslint-enable no-param-reassign */
+});
+
+
+export const { setEndCursor } = repositoriesSlice.actions;
+export const { setStartCursor } = repositoriesSlice.actions;
+export const { setHasNextPage } = repositoriesSlice.actions;
+export default repositoriesSlice.reducer;

@@ -14,7 +14,7 @@ import styles from "./Table.module.scss";
 import { useAppDispatch } from '../../app/hooks';
 import { fetchPublicRepositories, IEdge} from "../../app/repositoriesSlice";
 import { RootState } from "../../app/store";
-// import Pagination from '../Pagination/Pagination';
+import Pagination from '../Pagination/Pagination';
 import {formatDate} from '../../utils/formatDate';
 
 export default function BasicTable() {
@@ -23,13 +23,15 @@ const dispatch = useAppDispatch();
 const data = useSelector((state: RootState) => state.data.data);
 const loading = useSelector((state: RootState) => state.data.loading);
 const error = useSelector((state: RootState) => state.data.error);
-console.log(data )
-console.log(data)
-console.log(typeof data);
+const endCursor = useSelector((state: RootState) => state.data.endCursor);
+const startCursor = useSelector((state: RootState) => state.data.startCursor);
+const hasNextPage = useSelector((state: RootState) => state.data.hasNextPage);
+console.log("data", data)
+console.log("lastCursor", endCursor, "startCursor", startCursor, "hasNextPage", hasNextPage,);
+
 useEffect(() => {
       dispatch(fetchPublicRepositories({ first: 10, after:data?.pageInfo.endCursor }));
-    }, [dispatch]);
-    
+    }, []);
     if (loading) {
       
       return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
@@ -75,7 +77,7 @@ useEffect(() => {
     </TableBody>
             
           </Table>
-          {/* <Pagination/> */}
+          <Pagination/>
         </TableContainer>
         
       </Container>
