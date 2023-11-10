@@ -8,7 +8,7 @@ interface IPaginationState {
 
 // Начальное значение
 const initialState: IPaginationState = {
-    page: 1,
+    page: 0,
     rowsPerPage: 10,
 };
 

@@ -1,10 +1,8 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
-
-
 // const page = useSelector((state: RootState) => state.pagination.page);
 // const rowsPerPage = useSelector((state: RootState) => state.pagination.rowsPerPage);
-const GITHUB_TOKEN = "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";
+const GITHUB_TOKEN = "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";
 
 interface IPrimaryLanguage {
   name: string;
@@ -33,22 +31,22 @@ export interface IRepository {
 }
 
 export interface IRepositoriesState {
-  searchTerm: string | null,
-  data: IRepository | null;
-  loading: boolean;
-  error: string | null;
-  endCursor: string | null;
-  startCursor: string | null,
+  searchTerm: string,
+  data: IRepository | null,
+  loading: boolean,
+  error: string | null,
+  endCursorHistory: string[],
+  startCursorHistory: string[],
   hasNextPage: boolean | null,
 }
 
 export const initialState: IRepositoriesState = {
-  searchTerm: null,
+  searchTerm: "ф",
   data: null,
   loading: false,
   error: null,
-  endCursor: null,
-  startCursor: null,
+  endCursorHistory: [],
+  startCursorHistory: [],
   hasNextPage: false,
 };
 
@@ -60,7 +58,7 @@ interface QueryVariables {
 
 // GraphQL запрос на получение данных
 const query = `
-query ($first: Int, $after: String, $query: String){
+query ($first: Int, $after: String, $query: String!){
   search(type: REPOSITORY, query: $query, first: $first, after: $after) {
     repositoryCount,
     pageInfo {
@@ -109,21 +107,30 @@ export const fetchPublicRepositories = createAsyncThunk<IRepository, QueryVariab
   }
 );
 
-const repositoriesSlice = createSlice({
+export const repositoriesSlice = createSlice({
   name: 'data',
   initialState,
   reducers: {
     setSearchTerm: (state, action: PayloadAction<string>) => {
       state.searchTerm = action.payload;
     },
-    setEndCursor: (state, action: PayloadAction<IRepository>) => {
-      state.endCursor = action.payload.pageInfo.endCursor;
+    clearSearchTerm: (state) => {
+      state.searchTerm = "";
     },
     setHasNextPage: (state, action: PayloadAction<IRepository>) => {
       state.hasNextPage = action.payload.pageInfo.hasNextPage;
     },
-    setStartCursor: (state, action: PayloadAction<IRepository>) => {
-      state.startCursor = action.payload.pageInfo.startCursor;
+    pushEndCursor: (state, action: PayloadAction<string>) => {
+      state.endCursorHistory.push(action.payload);
+    },
+    popEndCursor: (state) => {
+      state.endCursorHistory.pop();
+    },
+    pushStartCursor: (state, action: PayloadAction<string>) => {
+      state.startCursorHistory.push(action.payload);
+    },
+    popStartCursor: (state) => {
+      state.startCursorHistory.pop();
     },
   },
   extraReducers: (builder) => {
@@ -137,8 +144,8 @@ const repositoriesSlice = createSlice({
         state.loading = false;
         state.data = action.payload;
         state.hasNextPage = action.payload.pageInfo.hasNextPage;
-        state.startCursor = action.payload.pageInfo.startCursor;
-        state.endCursor = action.payload.pageInfo.endCursor;
+        state.startCursorHistory.push(action.payload.pageInfo.startCursor); 
+        state.endCursorHistory.push(action.payload.pageInfo.endCursor); 
       })
       .addCase(fetchPublicRepositories.rejected, (state, { payload }) => {
         if (payload) {
@@ -146,13 +153,12 @@ const repositoriesSlice = createSlice({
           state.error = payload;
         }
       });
-      
+
   },
   /* eslint-enable no-param-reassign */
 });
 
 
-export const { setEndCursor } = repositoriesSlice.actions;
-export const { setStartCursor } = repositoriesSlice.actions;
-export const { setHasNextPage } = repositoriesSlice.actions;
+
+export const { setSearchTerm, setHasNextPage, clearSearchTerm, pushStartCursor, pushEndCursor, popStartCursor, popEndCursor } = repositoriesSlice.actions;
 export default repositoriesSlice.reducer;

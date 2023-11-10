@@ -1,26 +1,17 @@
 import React from "react";
+// import { useSelector } from 'react-redux';
 import { Button, AppBar, Toolbar } from "@mui/material";
 import { StyledEngineProvider } from "@mui/material/styles";
 import SearchInput from "../SearchInput/SearchInput";
 import styles from "./Header.module.scss";
-import { useAppDispatch } from '../../app/hooks';
+// import { useAppDispatch } from '../../app/hooks';
+// import { RootState } from "../../app/store";
 
 function Header() {
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
+  // const searchTerm = useSelector((state: RootState) => state.data.searchTerm);
   
-  const [inputValue, setInputValue] = useState('');
-  
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-  }
-  
-  const handleSearchClick = () => {
-    // Выполняется действие поиска, обновляя состояние Redux, чтобы отобразить результаты поиска
-    dispatch(repositoriesSlice.actions.setSearchTerm(inputValue));
-  }
-
-
 
   return (
     <StyledEngineProvider injectFirst>

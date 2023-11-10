@@ -12,7 +12,7 @@ import Paper from "@mui/material/Paper";
 import { StyledEngineProvider } from "@mui/material/styles";
 import styles from "./Table.module.scss";
 import { useAppDispatch } from '../../app/hooks';
-import { fetchPublicRepositories, IEdge} from "../../app/repositoriesSlice";
+import {fetchPublicRepositories, IEdge} from "../../app/repositoriesSlice";
 import { RootState } from "../../app/store";
 import Pagination from '../Pagination/Pagination';
 import {formatDate} from '../../utils/formatDate';
@@ -23,14 +23,11 @@ const dispatch = useAppDispatch();
 const data = useSelector((state: RootState) => state.data.data);
 const loading = useSelector((state: RootState) => state.data.loading);
 const error = useSelector((state: RootState) => state.data.error);
-const endCursor = useSelector((state: RootState) => state.data.endCursor);
-const startCursor = useSelector((state: RootState) => state.data.startCursor);
-const hasNextPage = useSelector((state: RootState) => state.data.hasNextPage);
-console.log("data", data)
-console.log("lastCursor", endCursor, "startCursor", startCursor, "hasNextPage", hasNextPage,);
-
+const searchTerm = useSelector((state: RootState) => state.data.searchTerm);
+const endCursorHistory = useSelector((state: RootState) => state.data.endCursorHistory);
+console.log(endCursorHistory);
 useEffect(() => {
-      dispatch(fetchPublicRepositories({ first: 10, after:data?.pageInfo.endCursor }));
+      dispatch(fetchPublicRepositories({ first: 10, query: searchTerm ||  "", after:data?.pageInfo.endCursor }));
     }, []);
     if (loading) {
       
@@ -62,7 +59,7 @@ useEffect(() => {
             <TableBody>
       {data?.edges.map((repo: IEdge) => (
         <TableRow
-          key={repo.node.name}
+          key={repo.node.updatedAt}
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
           <TableCell component="th" scope="row">
