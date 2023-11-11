@@ -1,10 +1,9 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import TablePagination from '@mui/material/TablePagination';
-import { repositoriesSlice, fetchPublicRepositories, } from "../../app/repositoriesSlice";
+import { fetchPublicRepositories } from "../../app/repositoriesSlice";
 import { RootState, AppDispatch } from "../../app/store";
 import { setPage, setRowsPerPage } from "../../app/paginationSlice";
-
 
 function Pagination() {
     const dispatch = useDispatch<AppDispatch>();
@@ -14,46 +13,55 @@ function Pagination() {
     const page = useSelector((state: RootState) => state.pagination.page);
     const rowsPerPage = useSelector((state: RootState) => state.pagination.rowsPerPage);
     const endCursorHistory = useSelector((state: RootState) => state.data.endCursorHistory);
+    const startCursorHistory = useSelector((state: RootState) => state.data.startCursorHistory);
     const hasNextPage = useSelector((state: RootState) => state.data.hasNextPage);
 
-    const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
-        if ((newPage < page)) {
-            dispatch(repositoriesSlice.actions.popEndCursor());
-            dispatch(repositoriesSlice.actions.popStartCursor());
-            dispatch(fetchPublicRepositories({ first: rowsPerPage, query: searchTerm || "", after: endCursorHistory[endCursorHistory.length - 1] }));
-            dispatch(setPage(newPage));
+    const handleChangePage = (
+        event: React.MouseEvent<HTMLButtonElement> | null,
+        newPage: number
+    ) => {
+        console.log("endCursorHistory[endCursorHistory.length - 1]",endCursorHistory[endCursorHistory.length - 1])
+        console.log("start[start.length - 1]",startCursorHistory[startCursorHistory.length - 1])
+        console.log("action.payload.pageInfo.endCursor]",data?.pageInfo.endCursor)
+        console.log("action.payload.pageInfo.endCursor]",data?.pageInfo.startCursor)
+        if (newPage < page) {
+            dispatch(fetchPublicRepositories({ last: rowsPerPage, query: searchTerm || "", before: data?.pageInfo.endCursor }));
         }
-        else if (hasNextPage) {
-            dispatch(fetchPublicRepositories({ first: rowsPerPage, query: searchTerm || "", after: endCursorHistory[endCursorHistory.length - 1] }));
-            dispatch(setPage(newPage));
+            
+         else if (hasNextPage) {
+            dispatch(fetchPublicRepositories({ first: rowsPerPage, query: searchTerm || "", after:data?.pageInfo.startCursor }));
         }
+        dispatch(setPage(newPage));
     };
 
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChangeRowsPerPage = (
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
         const newRowsPerPage = parseInt(event.target.value, 10);
-        dispatch(fetchPublicRepositories({ first: newRowsPerPage, query: searchTerm || "", after: data?.pageInfo.startCursor }));
+        console.log(startCursorHistory)
+        console.log(data?.pageInfo.startCursor)
+        dispatch(fetchPublicRepositories({ first: newRowsPerPage, query: searchTerm || "", after:data?.pageInfo.endCursor }));
         dispatch(setRowsPerPage(newRowsPerPage));
-    }
+    };
 
     if (loading) {
-        return <div>Loading...</div>
+        return <div>Loading...</div>;
     }
 
     if (!data?.edges.length) {
-        return <div>No repositories yet</div>
+        return <div>No repositories yet</div>;
     }
 
     return (
         <TablePagination
             component="div"
-            count={data.repositoryCount || -1} // Это свойство задает общее количество элементов или строк, которые нужно отобразить с помощью пагинации
-            page={page} // Значение текущей страницы.
-            rowsPerPage={rowsPerPage} // Сменили на ваш размер страницы
+            count={data.repositoryCount || -1}
+            page={page}
+            rowsPerPage={rowsPerPage}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
         />
     );
 }
-
 
 export default Pagination;

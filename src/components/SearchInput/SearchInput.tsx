@@ -1,17 +1,15 @@
-import React, {useState} from "react";
+import React from "react";
 
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import styles from "./SearchInput.module.scss";
 
+type SearchInputProps = {
+    searchTerm: string;
+    handleChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  };
 
-function SearchInput() {
-  const [input, setInput] = useState("");
-  // const handleSearchClick = (event : React.MouseEvent<HTMLButtonElement> | null) => {
-  //   event.preventDefault();
-  //   // Выполняется действие поиска, обновляя состояние Redux, чтобы отобразить результаты поиска
-  //   dispatch(searchTerm(input));
-  // }
+function SearchInput({searchTerm, handleChange}: SearchInputProps){
 
   return (
     <Paper
@@ -29,12 +27,11 @@ function SearchInput() {
         sx={{ ml: 2, flex: 1 }}
         placeholder="Введите поисковый запрос"
         inputProps={{ "aria-label": "Введите поисковый запрос" }}
-        onChange={(e) => {setInput(e.target.value)}}
-        value={input}
+        onChange={handleChange}
+        value={searchTerm}
       />
     </Paper>
   );
 }
 
 export default SearchInput;
-

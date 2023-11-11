@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
 // const page = useSelector((state: RootState) => state.pagination.page);
 // const rowsPerPage = useSelector((state: RootState) => state.pagination.rowsPerPage);
-const GITHUB_TOKEN = "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";
+const GITHUB_TOKEN = "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";
 
 interface IPrimaryLanguage {
   name: string;
@@ -18,6 +18,7 @@ export interface INode {
 
 export interface IEdge {
   node: INode;
+  cursor: string;
 }
 
 export interface IRepository {
@@ -51,15 +52,17 @@ export const initialState: IRepositoriesState = {
 };
 
 interface QueryVariables {
-  first: number;
+  first?: number;
+  last?: number;
   after?: string;
+  before?: string;
   query: string;
 }
 
 // GraphQL запрос на получение данных
 const query = `
-query ($first: Int, $after: String, $query: String!){
-  search(type: REPOSITORY, query: $query, first: $first, after: $after) {
+query ($query: String!, $first: Int, $last: Int, $after: String, $before: String, ){
+  search(type: REPOSITORY,  query:  $query, first: $first, last: $last, after: $after, before: $before) {
     repositoryCount,
     pageInfo {
       startCursor
@@ -67,6 +70,7 @@ query ($first: Int, $after: String, $query: String!){
       endCursor
     },
     edges {
+      cursor
       node {
         ... on Repository {
           name
@@ -76,6 +80,8 @@ query ($first: Int, $after: String, $query: String!){
           forkCount
           stargazerCount
           updatedAt
+          licenseInfo { 
+          name }
         }
       }
       
@@ -99,6 +105,8 @@ export const fetchPublicRepositories = createAsyncThunk<IRepository, QueryVariab
       })
       const data = await res.json();
       if (res.ok) {
+        console.log(res)
+        console.log(data)
         return data.data.search;
       }
     } catch (err: any) {
@@ -119,18 +127,6 @@ export const repositoriesSlice = createSlice({
     },
     setHasNextPage: (state, action: PayloadAction<IRepository>) => {
       state.hasNextPage = action.payload.pageInfo.hasNextPage;
-    },
-    pushEndCursor: (state, action: PayloadAction<string>) => {
-      state.endCursorHistory.push(action.payload);
-    },
-    popEndCursor: (state) => {
-      state.endCursorHistory.pop();
-    },
-    pushStartCursor: (state, action: PayloadAction<string>) => {
-      state.startCursorHistory.push(action.payload);
-    },
-    popStartCursor: (state) => {
-      state.startCursorHistory.pop();
     },
   },
   extraReducers: (builder) => {
@@ -160,5 +156,5 @@ export const repositoriesSlice = createSlice({
 
 
 
-export const { setSearchTerm, setHasNextPage, clearSearchTerm, pushStartCursor, pushEndCursor, popStartCursor, popEndCursor } = repositoriesSlice.actions;
+export const { setSearchTerm, setHasNextPage, clearSearchTerm } = repositoriesSlice.actions;
 export default repositoriesSlice.reducer;

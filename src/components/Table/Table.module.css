@@ -8,7 +8,7 @@
   width: 100%;
   max-width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-start;
   background: #f2f2f2;
 }
@@ -28,7 +28,7 @@
   justify-content: center;
   align-items: center;
   min-height: calc(100vh - 112px);
-  color: var(--4-f-4-f-4-f, #4F4F4F);
+  color: var(--4-f-4-f-4-f, #4f4f4f);
   text-align: center;
   font-feature-settings: "clig" off, "liga" off;
   font-family: Roboto;
@@ -37,4 +37,44 @@
   font-weight: 400;
   line-height: 143%;
   letter-spacing: 0.17px;
+}
+
+.loadingWrapper {
+  display: "flex";
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.loading {
+  color: "#00838F";
+}
+
+.textWapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 112px);
+  width: 100%;
+}
+
+.textWapper Typography {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.chipLanguage {
+  background: #2196F3;
+  color: #FFF;
+  font-family: Roboto;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0.16px;
 }/*# sourceMappingURL=Table.module.css.map */

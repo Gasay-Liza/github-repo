@@ -1,17 +1,25 @@
-import React from "react";
-// import { useSelector } from 'react-redux';
+import React, {useState} from "react";
+import {  useDispatch } from 'react-redux';
 import { Button, AppBar, Toolbar } from "@mui/material";
 import { StyledEngineProvider } from "@mui/material/styles";
+import { repositoriesSlice } from "../../app/repositoriesSlice";
+
+import { AppDispatch } from "../../app/store";
 import SearchInput from "../SearchInput/SearchInput";
 import styles from "./Header.module.scss";
-// import { useAppDispatch } from '../../app/hooks';
-// import { RootState } from "../../app/store";
+
 
 function Header() {
+  const dispatch = useDispatch<AppDispatch>();
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
-  // const dispatch = useAppDispatch();
-  // const searchTerm = useSelector((state: RootState) => state.data.searchTerm);
-  
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSearch = () => {
+    dispatch(repositoriesSlice.actions.setSearchTerm((searchTerm)));
+  };
 
   return (
     <StyledEngineProvider injectFirst>
@@ -21,8 +29,8 @@ function Header() {
           variant="dense"
           sx={{ pl: 0, pr: 0 }}
         >
-          <SearchInput />
-          <Button variant="contained" color="primary" size="large">
+          <SearchInput searchTerm={searchTerm}  handleChange={handleChange}/>
+          <Button variant="contained" color="primary" size="large" onClick={handleSearch}>
             Искать
           </Button>
         </Toolbar>
