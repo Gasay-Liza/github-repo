@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
 // const page = useSelector((state: RootState) => state.pagination.page);
 // const rowsPerPage = useSelector((state: RootState) => state.pagination.rowsPerPage);
-const GITHUB_TOKEN = "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";
+const GITHUB_TOKEN = "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";
 
 interface IPrimaryLanguage {
   name: string;
@@ -10,6 +10,16 @@ interface IPrimaryLanguage {
 
 export interface INode {
   name: string;
+  repositoryTopics: {
+    nodes: {
+      topic: {
+        name: string | null;
+      }
+    }[]
+  }
+  licenseInfo: {
+    name: string | null;
+  }
   primaryLanguage: IPrimaryLanguage | null;
   forkCount: number;
   stargazerCount: number;
@@ -30,6 +40,7 @@ export interface IRepository {
   },
   edges: IEdge[];
 }
+
 
 export interface IRepositoriesState {
   searchTerm: string,
@@ -59,6 +70,7 @@ interface QueryVariables {
   query: string;
 }
 
+
 // GraphQL запрос на получение данных
 const query = `
 query ($query: String!, $first: Int, $last: Int, $after: String, $before: String, ){
@@ -77,6 +89,13 @@ query ($query: String!, $first: Int, $last: Int, $after: String, $before: String
           primaryLanguage {
             name
           }
+          repositoryTopics(first: 10) {
+            nodes {
+              topic {
+                name
+              }
+            }
+          }
           forkCount
           stargazerCount
           updatedAt
@@ -89,6 +108,7 @@ query ($query: String!, $first: Int, $last: Int, $after: String, $before: String
   }
 }
 `;
+
 
 export const fetchPublicRepositories = createAsyncThunk<IRepository, QueryVariables | void, { rejectValue: string }>(
   'repositories/fetchPublicRepositories',
@@ -114,6 +134,7 @@ export const fetchPublicRepositories = createAsyncThunk<IRepository, QueryVariab
     }
   }
 );
+
 
 export const repositoriesSlice = createSlice({
   name: 'data',
