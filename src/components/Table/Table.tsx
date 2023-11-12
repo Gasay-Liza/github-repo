@@ -36,7 +36,7 @@ export default function BasicTable() {
   const [selectedRepo, setSelectedRepo] = useState<IEdge | null>(null);
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof Data>('name');
-  const [sortedData, setSortedData] =  useState<IEdge[] | null>(null);;
+  // const [sortedData, setSortedData] =  useState<Data>(null);;
   useEffect(() => {
     dispatch(
       fetchPublicRepositories({
@@ -45,11 +45,19 @@ export default function BasicTable() {
         after: data?.pageInfo.endCursor,
       })
     );
-    if (data?.edges){
-      setSortedData((data?.edges));
-    }
+    // if (data?.edges){
+    //   setSortedData({
+    //     repo.node.primaryLanguage?.name
+    //     id: data?.edges.name,
+    //     name: data?.edges.name,
+    //     language: data?.edges.primaryLanguage,
+    //     forksNumber: data?.edges.forkCount,
+    //     starsNumber: data?.edges.stargazerCount,
+    //     date: data?.edges.updatedAt,
+    //   });
+    // }
    
-    setSelectedRepo(null);
+    // setSelectedRepo(null);
     dispatch(setPage(0));
   }, [searchTerm]);
 
@@ -198,7 +206,7 @@ export default function BasicTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-            { stableSort(sortedData || [], getComparator(order, orderBy)).map((repo: IEdge) => (
+            {data?.edges.map((repo: IEdge) => (
                 <TableRow
                   key={repo.cursor}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -217,7 +225,7 @@ export default function BasicTable() {
                   <TableCell>{repo.node.stargazerCount}</TableCell>
                   <TableCell>{formatDate(repo.node.updatedAt)}</TableCell>
                 </TableRow>
-              ))}
+              ))} 
             </TableBody>
           </Table>
           <Pagination />
