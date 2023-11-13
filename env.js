@@ -64,7 +64,7 @@ window.env = {
   "PROMPT": "$P$G",
   "PSModulePath": "C:\\Users\\gasay\\OneDrive\\Рабочий стол\\Документы\\WindowsPowerShell\\Modules;C:\\Program Files\\WindowsPowerShell\\Modules;C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules",
   "PUBLIC": "C:\\Users\\Public",
-  "REACT_APP_GITHUB_TOKEN": "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",
+  "REACT_APP_GITHUB_TOKEN": "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",
   "SESSIONNAME": "Console",
   "SystemDrive": "C:",
   "SystemRoot": "C:\\Windows",
