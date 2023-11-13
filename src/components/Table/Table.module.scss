@@ -1,5 +1,6 @@
 .table {
-  max-width: 960px;
+  width: 100%;
+  max-width: 100%;
 }
 
 .wrapper {
@@ -14,18 +15,15 @@
 }
 
 
-
 .tableWrapper {
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - 112px);
   padding: 0 32px 0 16px;
-  max-width: 960px;
+  width: 100%;
+  max-width: 100%;
   border-radius: 0;
   box-shadow: none;
-}
-
-.circularProgress {
 }
 
 .container {
@@ -48,26 +46,10 @@
   letter-spacing: 0.17px;
 }
 
-.tableSortLabel{
-  display: flex;
-  flex-direction: row;
-  text-align: left;
-  text-wrap: nowrap;
-}
-
-
-.loadingWrapper {
-  display: "flex";
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.loading {
-  color: "#00838F";
-}
 
 .detailRepo{
+  width: 100%;
+  max-width: 35%;
   padding-top: 24px;
   transition: opacity 10s ease-in-out;
 }
@@ -79,6 +61,7 @@
   align-items: center;
   height: calc(100vh - 112px);
   width: 100%;
+  max-width: 35%;
 }
 
 .textWapper Typography {

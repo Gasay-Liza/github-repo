@@ -1,86 +1,9 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { initialState, IRepository,  QueryVariables, IEdge } from '../utils/types';
 
 const {REACT_APP_GITHUB_TOKEN} = process.env;
 
-interface IPrimaryLanguage {
-  name: string;
-}
-
-export interface INode {
-  name: string;
-  repositoryTopics: {
-    nodes: {
-      topic: {
-        name: string | null;
-      }
-    }[]
-  }
-  licenseInfo: {
-    name: string | null;
-  }
-  primaryLanguage: IPrimaryLanguage | null;
-  forkCount: number;
-  stargazerCount: number;
-  updatedAt: string;
-}
-
-export interface IEdge {
-  node: INode;
-  cursor: string;
-}
-
-export interface IRepository {
-  repositoryCount: number | null;
-  pageInfo: {
-    startCursor: string;
-    hasNextPage: boolean;
-    endCursor: string;
-  },
-  edges: IEdge[];
-}
-
-export interface ISortedData {
-  id: string;
-  name: string;
-  language: string | null;
-  forksNumber: number;
-  starsNumber: number;
-  date: string;
-  cursor: string;
-}
-
-export interface IRepositoriesState {
-  searchTerm: string,
-  data: IRepository | null,
-  loading: boolean,
-  error: string | null,
-  endCursorHistory: string[],
-  startCursorHistory: string[],
-  hasNextPage: boolean | null,
-  sortedData: ISortedData[],
-}
-
-export const initialState: IRepositoriesState = {
-  searchTerm: "ф",
-  data: null,
-  loading: false,
-  error: null,
-  endCursorHistory: [],
-  startCursorHistory: [],
-  hasNextPage: false,
-  sortedData: [],
-};
-
-interface QueryVariables {
-  first?: number;
-  last?: number;
-  after?: string;
-  before?: string;
-  query: string;
-}
-
-
-// GraphQL запрос на получение данных
+// GraphQL запрос для получения данных о репозиториях Github
 const query = `
 query ($query: String!, $first: Int, $last: Int, $after: String, $before: String, ){
   search(type: REPOSITORY,  query:  $query, first: $first, last: $last, after: $after, before: $before) {
@@ -134,8 +57,6 @@ export const fetchPublicRepositories = createAsyncThunk<IRepository, QueryVariab
       })
       const data = await res.json();
       if (res.ok) {
-        console.log(res)
-        console.log(data)
         return data.data.search;
       }
     } catch (err: any) {
@@ -149,12 +70,11 @@ export const repositoriesSlice = createSlice({
   name: 'data',
   initialState,
   reducers: {
+    // Установить поисковый запрос
     setSearchTerm: (state, action: PayloadAction<string>) => {
       state.searchTerm = action.payload;
     },
-    clearSearchTerm: (state) => {
-      state.searchTerm = "";
-    },
+    // Сохраняем состояние "есть ли следующая страница" в стейт
     setHasNextPage: (state, action: PayloadAction<IRepository>) => {
       state.hasNextPage = action.payload.pageInfo.hasNextPage;
     },
@@ -162,10 +82,12 @@ export const repositoriesSlice = createSlice({
   extraReducers: (builder) => {
     /* eslint-disable no-param-reassign */
     builder
+     // Определение состояния при отправке запроса
       .addCase(fetchPublicRepositories.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
+       // Определение состояния при выполнении запроса
       .addCase(fetchPublicRepositories.fulfilled, (state, action: PayloadAction<IRepository>) => {
         state.loading = false;
         state.data = action.payload;
@@ -183,6 +105,7 @@ export const repositoriesSlice = createSlice({
           }));
         }
       })
+      // Определение состояния при ошибке запроса
       .addCase(fetchPublicRepositories.rejected, (state, { payload }) => {
         if (payload) {
           state.loading = false;
@@ -194,7 +117,5 @@ export const repositoriesSlice = createSlice({
   /* eslint-enable no-param-reassign */
 });
 
-
-
-export const { setSearchTerm, setHasNextPage, clearSearchTerm } = repositoriesSlice.actions;
+export const { setSearchTerm, setHasNextPage} = repositoriesSlice.actions;
 export default repositoriesSlice.reducer;

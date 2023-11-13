@@ -3,7 +3,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import styles from "./RepoRow.module.scss";
 import { formatDate } from "../../utils/formatDate";
-import { ISortedData, IEdge } from "../../app/repositoriesSlice";
+import { ISortedData, IEdge } from "../../utils/types";
 
 interface RepoRowProps {
   selectedRepo: IEdge | null;
@@ -34,4 +34,4 @@ function RepoRow({ selectedRepo, repo, handleRowClick }: RepoRowProps) {
     );
   };
   
-  export default RepoRow;
+export default RepoRow;

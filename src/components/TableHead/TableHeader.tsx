@@ -2,12 +2,15 @@ import React from 'react';
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { StyledEngineProvider } from "@mui/material/styles";
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Box from "@mui/material/Box";
 import { visuallyHidden } from '@mui/utils';
-import styles from "./TableHeader.module.scss";
-import { HeadCell, ISortedData } from "../../utils/types";
+import { ISortedData} from "../../utils/types";
+
+interface HeadCell {
+  id: keyof ISortedData;
+  label: string;
+}
 
 interface TableHeaderProps {
   headCells: HeadCell[];
@@ -16,19 +19,17 @@ interface TableHeaderProps {
   createSortHandler: (property: keyof ISortedData) => (event: React.MouseEvent<unknown>) => void;
 }
 
+// Функциональный компонент TableHeader отображает заголовки в таблице данных и выполняет сортировку при клике на заголовок
 function TableHeader({ headCells, order, orderBy, createSortHandler }: TableHeaderProps) {
   return (
-    <StyledEngineProvider injectFirst>
-<TableHead className={styles.tableHead}>
+    <TableHead>
       <TableRow>
         {headCells.map((headCell) => (
           <TableCell
-          className={styles.tableCell}
             key={headCell.id}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
-            className={styles.tableSortLabel}
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
@@ -46,11 +47,7 @@ function TableHeader({ headCells, order, orderBy, createSortHandler }: TableHead
         ))}
       </TableRow>
     </TableHead>
-    </StyledEngineProvider>
-    
   );
 };
 
 export default TableHeader;
-
-
