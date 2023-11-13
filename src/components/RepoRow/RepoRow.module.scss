@@ -1,0 +1,11 @@
+.activeRow{
+    background-color: rgba(33, 150, 243, 0.04);
+  }
+  
+  .row{
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    &:hover{
+      background-color: rgba(33, 150, 243, 0.04);
+    }
+  }

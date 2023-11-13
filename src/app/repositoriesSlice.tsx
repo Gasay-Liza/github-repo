@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
-// const page = useSelector((state: RootState) => state.pagination.page);
-// const rowsPerPage = useSelector((state: RootState) => state.pagination.rowsPerPage);
-const GITHUB_TOKEN = "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";
+const {REACT_APP_GITHUB_TOKEN} = process.env;
 
 interface IPrimaryLanguage {
   name: string;
@@ -41,6 +39,15 @@ export interface IRepository {
   edges: IEdge[];
 }
 
+export interface ISortedData {
+  id: string;
+  name: string;
+  language: string | null;
+  forksNumber: number;
+  starsNumber: number;
+  date: string;
+  cursor: string;
+}
 
 export interface IRepositoriesState {
   searchTerm: string,
@@ -50,6 +57,7 @@ export interface IRepositoriesState {
   endCursorHistory: string[],
   startCursorHistory: string[],
   hasNextPage: boolean | null,
+  sortedData: ISortedData[],
 }
 
 export const initialState: IRepositoriesState = {
@@ -60,6 +68,7 @@ export const initialState: IRepositoriesState = {
   endCursorHistory: [],
   startCursorHistory: [],
   hasNextPage: false,
+  sortedData: [],
 };
 
 interface QueryVariables {
@@ -119,7 +128,7 @@ export const fetchPublicRepositories = createAsyncThunk<IRepository, QueryVariab
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Authorization': `Bearer ${GITHUB_TOKEN}`
+          'Authorization': `Bearer ${REACT_APP_GITHUB_TOKEN}`
         },
         body: JSON.stringify({ query, variables })
       })
@@ -161,8 +170,18 @@ export const repositoriesSlice = createSlice({
         state.loading = false;
         state.data = action.payload;
         state.hasNextPage = action.payload.pageInfo.hasNextPage;
-        state.startCursorHistory.push(action.payload.pageInfo.startCursor); 
-        state.endCursorHistory.push(action.payload.pageInfo.endCursor); 
+        // Новая логика: преобразую полученные данные и сохраняю их в состоянии
+        if (action.payload.edges) {
+          state.sortedData = action.payload.edges.map((repo: IEdge) => ({
+            id: repo.node.name,
+            name: repo.node.name,
+            language: repo?.node?.primaryLanguage?.name || null,
+            forksNumber: repo.node.forkCount,
+            starsNumber: repo.node.stargazerCount,
+            date: repo.node.updatedAt,
+            cursor: repo.cursor,
+          }));
+        }
       })
       .addCase(fetchPublicRepositories.rejected, (state, { payload }) => {
         if (payload) {

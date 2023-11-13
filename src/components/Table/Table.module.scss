@@ -13,19 +13,11 @@
   background: #f2f2f2;
 }
 
-.activeRow{
-  background-color: rgba(33, 150, 243, 0.04);
-}
 
-.row{
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-  &:hover{
-    background-color: rgba(33, 150, 243, 0.04);
-  }
-}
 
 .tableWrapper {
+  display: flex;
+  flex-direction: column;
   min-height: calc(100vh - 112px);
   padding: 0 32px 0 16px;
   max-width: 960px;

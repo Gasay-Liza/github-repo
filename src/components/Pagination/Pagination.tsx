@@ -1,9 +1,13 @@
 import React from 'react';
+import { StyledEngineProvider } from "@mui/material/styles";
+
 import { useSelector, useDispatch } from 'react-redux';
 import TablePagination from '@mui/material/TablePagination';
+import styles from "./Pagination.module.scss";
 import { fetchPublicRepositories } from "../../app/repositoriesSlice";
 import { RootState, AppDispatch } from "../../app/store";
 import { setPage, setRowsPerPage } from "../../app/paginationSlice";
+
 
 function Pagination() {
     const dispatch = useDispatch<AppDispatch>();
@@ -38,15 +42,17 @@ function Pagination() {
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div className={styles.text}>Загрузка...</div>;
     }
 
     if (!data?.edges?.length) {
-        return <div>No repositories yet</div>;
+        return <div className={styles.text}>Ничего не найдено</div>;
     }
 
     return (
+        <StyledEngineProvider injectFirst>
         <TablePagination
+            className={styles.pagination}
             component="div"
             count={data.repositoryCount || -1}
             page={page}
@@ -54,6 +60,7 @@ function Pagination() {
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
         />
+        </StyledEngineProvider>
     );
 }
 
