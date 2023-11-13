@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Box from "@mui/material/Box";
-import { visuallyHidden } from '@mui/utils';
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableSortLabel from '@mui/material/TableSortLabel';
 import TableContainer from "@mui/material/TableContainer";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
@@ -21,6 +15,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { fetchPublicRepositories, IEdge, ISortedData} from "../../app/repositoriesSlice";
 import { RootState } from "../../app/store";
 import RepoRow from "../RepoRow/RepoRow";
+import TableHeader from "../TableHeader/TableHeader";
 import Pagination from "../Pagination/Pagination";
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import { setPage } from "../../app/paginationSlice";
@@ -149,33 +144,7 @@ export default function BasicTable() {
       <Container className={styles.wrapper}>
         <TableContainer className={styles.tableWrapper} component={Paper}>
           <Table aria-label="git table" className={styles.table}>
-            <TableHead className={styles.tableHead}>
-              <TableRow>
-                {headCells.map((headCell) => (
-                  <TableCell
-                  className={styles.tableCell}
-                    key={headCell.id}
-                    sortDirection={orderBy === headCell.id ? order : false}
-                  >
-                    <TableSortLabel
-                    className={styles.tableSortLabel}
-                      active={orderBy === headCell.id}
-                      direction={orderBy === headCell.id ? order : "asc"}
-                      onClick={createSortHandler(headCell.id)}
-                    >
-                      {headCell.label}
-                      {orderBy === headCell.id ? (
-                        <Box component="span" sx={visuallyHidden}>
-                          {order === "desc"
-                            ? "sorted descending"
-                            : "sorted ascending"}
-                        </Box>
-                      ) : null}
-                    </TableSortLabel>
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
+            <TableHeader headCells={headCells} order={order} orderBy={orderBy} createSortHandler={createSortHandler} />
             <TableBody>
             {sortedData && sortedData?.length > 0 && stableSort(sortedData, getComparator(order, orderBy)).map((repo: ISortedData) => (
                 <RepoRow selectedRepo={selectedRepo} repo={repo} handleRowClick={handleRowClick} />
