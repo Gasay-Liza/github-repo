@@ -2,6 +2,7 @@
   "name": "git-repo",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://Gasay-Liza/github.io/github-repo",
   "dependencies": {
     "@apollo/client": "^3.8.5",
     "@emotion/react": "^11.11.1",
@@ -64,7 +65,8 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-react": "^7.28.0",
-    "eslint-plugin-react-hooks": "^4.3.0"
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "gh-pages": "^6.0.0"
   },
   "presets": [
     "@babel/preset-react"
