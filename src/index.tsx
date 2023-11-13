@@ -7,6 +7,7 @@ import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import Table from "./components/Table/Table";
 
+require('dotenv').config()
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
