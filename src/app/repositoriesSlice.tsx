@@ -1,10 +1,8 @@
-import env from "react-dotenv";
 
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { initialState, IRepository,  QueryVariables, IEdge } from '../utils/types';
 
-const {REACT_APP_GITHUB_TOKEN} = env;
-
+const {REACT_APP_GITHUB_TOKEN} = process.env;
 // GraphQL запрос для получения данных о репозиториях Github
 const query = `
 query ($query: String!, $first: Int, $last: Int, $after: String, $before: String, ){
