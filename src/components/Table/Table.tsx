@@ -36,7 +36,9 @@ export default function BasicTable() {
   const [selectedRepo, setSelectedRepo] = useState<IEdge | null>(null);
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof Data>('name');
-  // const [sortedData, setSortedData] =  useState<Data>(null);;
+  const [sortedData, setSortedData] =  useState<Data[] | null>(null);
+  
+  
   useEffect(() => {
     dispatch(
       fetchPublicRepositories({
@@ -45,23 +47,20 @@ export default function BasicTable() {
         after: data?.pageInfo.endCursor,
       })
     );
-    // if (data?.edges){
-    //   setSortedData({
-    //     repo.node.primaryLanguage?.name
-    //     id: data?.edges.name,
-    //     name: data?.edges.name,
-    //     language: data?.edges.primaryLanguage,
-    //     forksNumber: data?.edges.forkCount,
-    //     starsNumber: data?.edges.stargazerCount,
-    //     date: data?.edges.updatedAt,
-    //   });
-    // }
-   
+    if (data?.edges) {
+      setSortedData(data?.edges.map((repo: IEdge) => ({
+        id: repo.node.name,
+        name: repo.node.name,
+        language: repo?.node?.primaryLanguage?.name || null,
+        forksNumber: repo.node.forkCount,
+        starsNumber: repo.node.stargazerCount,
+        date: repo.node.updatedAt,
+      })));
+    }
+
     // setSelectedRepo(null);
     dispatch(setPage(0));
   }, [searchTerm]);
-
-  
 
 
   if (loading) {
@@ -119,7 +118,7 @@ export default function BasicTable() {
   interface Data {
     id: string;
     name: string;
-    language: string;
+    language: string | null;
     forksNumber: number;
     starsNumber: number;
     date: string;
