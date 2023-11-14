@@ -1,0 +1,13 @@
+.tableSortLabel {
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  text-wrap: nowrap;
+}
+
+.tableCell:first-child .tableSortLabel {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  text-align: right;
+  margin-left: -5px;
+}/*# sourceMappingURL=TableHeader.module.css.map */

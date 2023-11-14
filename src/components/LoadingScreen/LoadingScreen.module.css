@@ -1,0 +1,10 @@
+.loadingScreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.circularProgress {
+  color: "#00838F";
+}/*# sourceMappingURL=LoadingScreen.module.css.map */
