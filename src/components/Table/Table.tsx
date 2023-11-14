@@ -46,6 +46,7 @@ export default function BasicTable() {
   const loading = useSelector((state: RootState) => state.data.loading);
   const error = useSelector((state: RootState) => state.data.error);
   const searchTerm = useSelector((state: RootState) => state.data.searchTerm);
+  // Состояние компонента, которое хранит состояние поиска
 
   // Состояние компонента, которое хранит выбранный репозиторий
   const [selectedRepo, setSelectedRepo] = useState<IEdge | null>(null);
@@ -133,7 +134,7 @@ export default function BasicTable() {
             <TableHeader headCells={headCells} order={order} orderBy={orderBy} createSortHandler={createSortHandler} />
             <TableBody>
             {sortedData && sortedData?.length > 0 && stableSort(sortedData, getComparator(order, orderBy)).map((repo: ISortedData) => (
-                <RepoRow selectedRepo={selectedRepo} repo={repo} handleRowClick={handleRowClick} />
+                <RepoRow key={repo.cursor} selectedRepo={selectedRepo} repo={repo} handleRowClick={handleRowClick} />
               ))} 
             </TableBody>
           </Table>

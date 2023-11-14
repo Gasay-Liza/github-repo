@@ -14,7 +14,6 @@ interface RepoRowProps {
 function RepoRow({ selectedRepo, repo, handleRowClick }: RepoRowProps) {
     return (
       <TableRow
-        key={repo.cursor}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         onClick={() => handleRowClick(repo?.cursor)}
         className={

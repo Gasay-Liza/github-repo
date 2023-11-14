@@ -18,21 +18,25 @@ function Pagination() {
     const page = useSelector((state: RootState) => state.pagination.page);
     const rowsPerPage = useSelector((state: RootState) => state.pagination.rowsPerPage);
     const hasNextPage = useSelector((state: RootState) => state.data.hasNextPage);
-
+    console.log("endCursor", data?.pageInfo.startCursor, "startCursor", data?.pageInfo.endCursor);
+    console.log("data", data?.edges);
+    console.log(rowsPerPage)
     // handleChangePage обрабатывает изменения в пагинаторе, обновляя текущую выбранную страницу
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
         newPage: number
     ) => {
         if (newPage < page) {
-            dispatch(fetchPublicRepositories({ last: rowsPerPage, query: searchTerm || "", before: data?.pageInfo.endCursor }));
+            console.log("меньше")
+            dispatch(fetchPublicRepositories({ last: rowsPerPage, query: searchTerm || "", before: data?.pageInfo.startCursor }));
         }
             
         else if (hasNextPage) {
-            dispatch(fetchPublicRepositories({ first: rowsPerPage, query: searchTerm || "", after:data?.pageInfo.startCursor }));
+            dispatch(fetchPublicRepositories({ first: rowsPerPage, query: searchTerm || "", after:data?.pageInfo.endCursor }));
         }
         // Обновляем номер текущей страницы
         dispatch(setPage(newPage));
+        
     };
 
     // handleChangeRowsPerPage обрабатывает изменение количества строк на странице
@@ -40,7 +44,7 @@ function Pagination() {
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         const newRowsPerPage = parseInt(event.target.value, 10); // Получаем новое значение из ввода пользователя
-        dispatch(fetchPublicRepositories({ first: newRowsPerPage, query: searchTerm || "", after:data?.pageInfo.endCursor }));
+        dispatch(fetchPublicRepositories({ first: newRowsPerPage, query: searchTerm || ""}));
         // Обновляем значение строк на странице
         dispatch(setRowsPerPage(newRowsPerPage));
     };

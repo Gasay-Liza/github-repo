@@ -79,6 +79,7 @@ export const repositoriesSlice = createSlice({
     setHasNextPage: (state, action: PayloadAction<IRepository>) => {
       state.hasNextPage = action.payload.pageInfo.hasNextPage;
     },
+
   },
   extraReducers: (builder) => {
     /* eslint-disable no-param-reassign */
@@ -93,7 +94,7 @@ export const repositoriesSlice = createSlice({
         state.loading = false;
         state.data = action.payload;
         state.hasNextPage = action.payload.pageInfo.hasNextPage;
-        // Новая логика: преобразую полученные данные и сохраняю их в состоянии
+        // Преобразую полученные данные и сохраняю их в состоянии
         if (action.payload.edges) {
           state.sortedData = action.payload.edges.map((repo: IEdge) => ({
             id: repo.node.name,
