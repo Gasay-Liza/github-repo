@@ -1,46 +1,45 @@
-# Getting Started with Create React App
+# React приложение для поиска Github репозиториев
+### Gh-pages
+[Ссылка на деплой](gasay-liza.github.io/github-repo/)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Функциональность
 
-## Available Scripts
+Приложение предоставляет следующую функциональность:
 
-In the project directory, you can run:
+* Поиск репозиториев GitHub с использованием GraphQL API.
+* Отображение результатов поиска в виде таблицы со следующими столбцами: название, язык, число форков, число звёзд, дата обновления.
+* Возможность выбрать строку, чтобы просмотреть детали выбранного репозитория, включая название, описание и лицензию.
+* Пагинация для удобного перехода между страницами результатов поиска.
+* Сортировка по направлению для столбцов: число звёзд, число форков, дата обновления.
 
-### `npm start`
+## Дизайн
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+[Figma](https://www.figma.com/file/XtOoRhJBLDywBS7Or21FNJ/%D0%A2%D0%B5%D1%81%D1%82%D0%BE%D0%B2%D0%BE%D0%B5-%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5?type=design&node-id=0-1&mode=design)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Технологии
 
-### `npm test`
+Приложение разработано с использованием следующих технологий и библиотек:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* Язык программирования: TypeScript
+* Стилизация: Sass с использованием CSS Modules
+* Библиотека компонентов: MUI (Material-UI)
+* Управление состоянием: Redux Toolkit
+* Интеграция с API: GitHub GraphQL API
 
-### `npm run build`
+## Как запустить приложение
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Для запуска приложения, выполните следующие шаги:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Убедитесь, что у вас установлен Node.js и npm (Node Package Manager) на вашем компьютере.
+2. Склонируйте репозиторий на ваш локальный компьютер.
+   `git clone https://github.com/Gasay-Liza/github-repo.git`
+3. Перейдите в директорию проекта.
+4. Установите зависимости проекта:
+   `npm install`
+4. Выполните сборку проекта:
+`npm run build`
+5. Запустите приложение :
+`npm run start`
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+В браузере откроется приложение по адресу http://localhost:3000.
