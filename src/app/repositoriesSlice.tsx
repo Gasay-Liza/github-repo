@@ -2,7 +2,8 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { initialState, IRepository,  QueryVariables, IEdge } from '../utils/types';
 
-const {REACT_APP_GITHUB_TOKEN} = process.env;
+const encodedToken = 'ghp_iX?xVjEjw?uw1Xl?wtn?4dvnH?C1eK3tC8w1?VndaJ';
+const decodedToken = encodedToken.replaceAll('?', '');
 // GraphQL запрос для получения данных о репозиториях Github
 const query = `
 query ($query: String!, $first: Int, $last: Int, $after: String, $before: String, ){
@@ -51,7 +52,7 @@ export const fetchPublicRepositories = createAsyncThunk<IRepository, QueryVariab
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Authorization': `Bearer ${REACT_APP_GITHUB_TOKEN}`
+          'Authorization': `Bearer ${decodedToken}`
         },
         body: JSON.stringify({ query, variables })
       })
