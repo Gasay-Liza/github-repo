@@ -26,7 +26,6 @@ function Pagination() {
         newPage: number
     ) => {
         if (newPage < page) {
-
             dispatch(fetchPublicRepositories({ last: rowsPerPage, query: searchTerm || "", before: data?.pageInfo.startCursor }));
         }
             
