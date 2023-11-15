@@ -132,8 +132,7 @@ export default function BasicTable() {
 
   return (
     <StyledEngineProvider injectFirst>
-      {isSearchActive ? (
-        <div>
+      {isSearchActive ? ( <div>
           <Container className={styles.wrapper}>
             <TableContainer className={styles.tableWrapper} component={Paper}>
               <Table aria-label="git table" className={styles.table}>
@@ -211,8 +210,7 @@ export default function BasicTable() {
               </Container>
             )}
           </Container>
-        </div>
-      ) : (
+        </div>) : (
         <FirstScreen text="Добро пожаловать!" />
       )}
     </StyledEngineProvider>
