@@ -2,6 +2,7 @@
 
 .searchInput {
     ::placeholder {
+      width: 100%;
       color: rgba(0, 0, 0, 0.87);
       font-feature-settings: "clig" off, "liga" off;
       /* components/table-header */
@@ -12,4 +13,12 @@
       line-height: 24px; /* 171.429% */
       letter-spacing: 0.17px;
     }
+  }
+
+  .paper{
+    display: flex;
+    width: 100%;
+    max-width: 912px;
+    height: 42px;
+    margin-right: 8px;
   }

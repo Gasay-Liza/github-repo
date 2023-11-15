@@ -2,29 +2,24 @@ import React, {useState} from "react";
 import {  useDispatch } from 'react-redux';
 import { Button, AppBar, Toolbar } from "@mui/material";
 import { StyledEngineProvider } from "@mui/material/styles";
-import { repositoriesSlice } from "../../app/repositoriesSlice";
+import { repositoriesSlice} from "../../app/repositoriesSlice";
 
 import { AppDispatch } from "../../app/store";
 import SearchInput from "../SearchInput/SearchInput";
 import styles from "./Header.module.scss";
 
-interface HeaderProps {
-  setSearchActive: Function;
-}
-
-function Header({setSearchActive} : boolean) {
+function Header() {
   const dispatch = useDispatch<AppDispatch>();
   const [searchTerm, setSearchTerm] = useState<string>('');
-
+  const { setIsSearchActive } = repositoriesSlice.actions;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setSearchTerm(event.target.value);
-    
   };
 
   const handleSearch = () => {
     dispatch(repositoriesSlice.actions.setSearchTerm((searchTerm)));
-    setSearchActive(true);
+    dispatch(setIsSearchActive(true));
   };
 
   return (

@@ -1,36 +1,24 @@
-import React, { useState } from 'react';
+import React from "react";
+import { StyledEngineProvider } from "@mui/material/styles";
 
-const MyComponent = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isSearchActive, setIsSearchActive] = useState(false);
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import styles from "./FirstScreen.module.scss";
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    // Как только пользователь начинает поиск, мы устанавливаем `isSearchActive` в true
-    setIsSearchActive(true);
-    // Здесь должен быть код для выполнения поискового запроса
-    console.log(searchTerm);
-  };
+interface Props {
+  text: string;
+}
 
+function FirstScreen({ text }: Props) {
   return (
-    <div>
-      {/* 
-        Если `isSearchActive` равен false, мы показываем приветствующий контейнер 
-        Как только `isSearchActive` становится true, контейнер скрывается
-      */}
-      {!isSearchActive && <div>Добро пожаловать!</div>}
-  
-      <form onSubmit={handleSearch}>
-        <input
-          type="text"
-          placeholder="Введите поисковый запрос"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <button type="submit">Найти</button>
-      </form>
-    </div>
+    <StyledEngineProvider injectFirst>
+      <Container className={styles.wrapper}>
+        <Typography className={styles.title} variant="h3">
+          {text}
+        </Typography>
+      </Container>
+    </StyledEngineProvider>
   );
-};
+}
 
-export default MyComponent;
+export default FirstScreen;

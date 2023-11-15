@@ -52,6 +52,7 @@ export interface ISortedData {
 
 // IRepositoriesState - интерфейс для описания состояния хранилища репозиториев
 export interface IRepositoriesState {
+    isSearchActive: boolean,
     searchTerm: string, // Поисковый запрос
     data: IRepository | null, // Данные репозиториев
     loading: boolean, // Флаг загрузки данных
@@ -64,7 +65,8 @@ export interface IRepositoriesState {
 
 // Начальное состояние хранилища репозиториев.
 export const initialState: IRepositoriesState = {
-    searchTerm: "ф",
+    isSearchActive: false,
+    searchTerm: "",
     data: null,
     loading: false,
     error: null,

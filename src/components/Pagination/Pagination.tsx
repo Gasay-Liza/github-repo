@@ -18,16 +18,15 @@ function Pagination() {
     const page = useSelector((state: RootState) => state.pagination.page);
     const rowsPerPage = useSelector((state: RootState) => state.pagination.rowsPerPage);
     const hasNextPage = useSelector((state: RootState) => state.data.hasNextPage);
-    console.log("endCursor", data?.pageInfo.startCursor, "startCursor", data?.pageInfo.endCursor);
-    console.log("data", data?.edges);
-    console.log(rowsPerPage)
+
+
     // handleChangePage обрабатывает изменения в пагинаторе, обновляя текущую выбранную страницу
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
         newPage: number
     ) => {
         if (newPage < page) {
-            console.log("меньше")
+
             dispatch(fetchPublicRepositories({ last: rowsPerPage, query: searchTerm || "", before: data?.pageInfo.startCursor }));
         }
             

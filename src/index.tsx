@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { Provider } from "react-redux";
@@ -7,16 +7,14 @@ import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import Table from "./components/Table/Table";
 
-const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
-
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
 root.render(
   <Provider store={store}>
     <React.StrictMode>
-      <Header isSearchActive={isSearchActive}/>
-      <Table setIsSearchActive={setIsSearchActive}/>
+      <Header/>
+      <Table/>
       <Footer />
     </React.StrictMode>
   </Provider>,

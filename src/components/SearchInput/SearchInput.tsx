@@ -1,5 +1,5 @@
 import React from "react";
-
+import { StyledEngineProvider } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import styles from "./SearchInput.module.scss";
@@ -12,15 +12,10 @@ type SearchInputProps = {
 function SearchInput({searchTerm, handleChange}: SearchInputProps){
 
   return (
-    <Paper
+    <StyledEngineProvider injectFirst>
+<Paper
       component="form"
-      sx={{
-        display: "flex",
-        mr: 1,
-        alignItems: "center",
-        width: 912,
-        height: "42px",
-      }}
+      className={styles.paper}
     >
       <InputBase
         className={styles.searchInput}
@@ -31,6 +26,8 @@ function SearchInput({searchTerm, handleChange}: SearchInputProps){
         value={searchTerm}
       />
     </Paper>
+    </StyledEngineProvider>
+    
   );
 }
 
