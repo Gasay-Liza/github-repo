@@ -135,7 +135,7 @@ export default function BasicTable() {
       {isSearchActive ? ( <div>
           <Container className={styles.wrapper}>
             <TableContainer className={styles.tableWrapper} component={Paper}>
-              <Table aria-label="git table" className={styles.table}>
+              <Table stickyHeader aria-label="git table" className={styles.table}>
                 <TableHeader
                   headCells={headCells}
                   order={order}
@@ -167,7 +167,7 @@ export default function BasicTable() {
             {/* Если выбран репозиторий, показываем информацию о нем */}
             {selectedRepo && (
               <Container className={styles.detailRepo}>
-                <Typography variant="h3">{selectedRepo.node.name}</Typography>
+                <Typography className={styles.detailRepoTitle}variant="h3">{selectedRepo.node.name}</Typography>
                 <Container className={styles.detailWrapper}>
                   {selectedRepo?.node.primaryLanguage?.name && (
                     <Chip
