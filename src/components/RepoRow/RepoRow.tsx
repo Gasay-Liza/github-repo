@@ -3,11 +3,11 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import styles from "./RepoRow.module.scss";
 import { formatDate } from "../../utils/formatDate";
-import { ISortedData, IEdge } from "../../utils/types";
+import { IEdge } from "../../utils/types";
 
 interface RepoRowProps {
   selectedRepo: IEdge | null;
-  repo: ISortedData;
+  repo: IEdge;
   handleRowClick: (cursor: string) => void;
 }
 
@@ -23,12 +23,12 @@ function RepoRow({ selectedRepo, repo, handleRowClick }: RepoRowProps) {
         }
       >
         <TableCell component="th" scope="row">
-          {repo.name}
+          {repo.node.name}
         </TableCell>
-        <TableCell>{repo.language}</TableCell>
-        <TableCell>{repo.forksNumber}</TableCell>
-        <TableCell>{repo.starsNumber}</TableCell>
-        <TableCell>{formatDate(repo.date)}</TableCell>
+        <TableCell>{repo?.node.primaryLanguage?.name}</TableCell>
+        <TableCell>{repo.node.forkCount}</TableCell>
+        <TableCell>{repo.node.stargazerCount}</TableCell>
+        <TableCell>{formatDate(repo.node.updatedAt)}</TableCell>
       </TableRow>
     );
   };

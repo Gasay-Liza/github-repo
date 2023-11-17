@@ -3,15 +3,21 @@ import {
   initialState,
   IRepository,
   QueryVariables,
-  IEdge,
 } from "../utils/types";
 
 const encodedToken = "ghp_iX?xVjEjw?uw1Xl?wtn?4dvnH?C1eK3tC8w1?VndaJ";
 const decodedToken = encodedToken.replaceAll("?", "");
 // GraphQL запрос для получения данных о репозиториях Github
+
+// query: $query in:name sort:name-desc
+// query: $query in:name sort:stars-desc
+// query: $query in:name sort:language-desc
+// query: $query in:name sort:forks-desc
+// query: $query in:name sort:date-desc
 const query = `
-query ($query: String!, $first: Int, $last: Int, $after: String, $before: String, ){
-  search(type: REPOSITORY,  query:  $query, first: $first, last: $last, after: $after, before: $before) {
+query ($query: String!, $first: Int, $last: Int, $after: String, $before: String, $sort: String, 
+  $direction: String){
+  search(type: REPOSITORY,  query:  $query in:name sort:$sort-$, first: $first, last: $last, after: $after, before: $before) {
     repositoryCount,
     pageInfo {
       startCursor
@@ -45,7 +51,7 @@ query ($query: String!, $first: Int, $last: Int, $after: String, $before: String
   }
 }
 `;
-
+// sort:stars-desc
 export const fetchPublicRepositories = createAsyncThunk<
   IRepository,
   QueryVariables | void,
@@ -110,20 +116,7 @@ export const repositoriesSlice = createSlice({
           state.loading = false;
           state.data = action.payload;
           state.hasNextPage = action.payload.pageInfo.hasNextPage;
-          // Преобразую полученные данные и сохраняю их в состоянии
-          if (action.payload.edges) {
-            state.sortedData = action.payload.edges.map((repo: IEdge) => ({
-              id: repo.node.name,
-              name: repo.node.name,
-              language: repo?.node?.primaryLanguage?.name || null,
-              forksNumber: repo.node.forkCount,
-              starsNumber: repo.node.stargazerCount,
-              date: repo.node.updatedAt,
-              cursor: repo.cursor,
-            }));
-          }
-        }
-      )
+        })
       // Определение состояния при ошибке запроса
       .addCase(fetchPublicRepositories.rejected, (state, { payload }) => {
         if (payload) {

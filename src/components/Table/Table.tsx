@@ -31,9 +31,6 @@ import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import FirstScreen from "../FirstScreen/FirstScreen";
 import { setPage } from "../../app/paginationSlice";
 
-// Импортирование функций, относящихся к сортировке
-import { stableSort, getComparator, Order } from "../../utils/sortingFunctions";
-
 // Стили
 import styles from "./Table.module.scss";
 
@@ -43,7 +40,6 @@ export default function BasicTable() {
 
   // Получение данных из Redux store
   const data = useSelector((state: RootState) => state.data.data);
-  const sortedData = useSelector((state: RootState) => state.data.sortedData);
   const loading = useSelector((state: RootState) => state.data.loading);
   const error = useSelector((state: RootState) => state.data.error);
   const searchTerm = useSelector((state: RootState) => state.data.searchTerm);
@@ -103,11 +99,11 @@ export default function BasicTable() {
       label: "Язык",
     },
     {
-      id: "forksNumber",
+      id: "forks",
       label: "Число форков",
     },
     {
-      id: "starsNumber",
+      id: "stars",
       label: "Число звезд",
     },
     {
@@ -142,11 +138,23 @@ export default function BasicTable() {
                   orderBy={orderBy}
                   createSortHandler={createSortHandler}
                 />
+                {/* {data?.edges.map((repo: IEdge) => (
+        <TableRow
+          key={repo.node.name}
+          sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+        >
+          <TableCell component="th" scope="row">
+            {repo.node.name}
+          </TableCell>
+          <TableCell>{repo.node.primaryLanguage?.name}</TableCell>
+          <TableCell>{repo.node.forkCount}</TableCell>
+          <TableCell>{repo.node.stargazerCount}</TableCell>
+          <TableCell>{formatDate(repo.node.updatedAt)}</TableCell>
+        </TableRow>
+      ))} */}
                 <TableBody>
-                  {sortedData &&
-                    sortedData?.length > 0 &&
-                    stableSort(sortedData, getComparator(order, orderBy)).map(
-                      (repo: ISortedData) => (
+                {data?.edges.map(
+                      (repo: IEdge) => (
                         <RepoRow
                           key={repo.cursor}
                           selectedRepo={selectedRepo}
@@ -159,6 +167,7 @@ export default function BasicTable() {
               </Table>
               <Pagination />
             </TableContainer>
+            
             {!selectedRepo && (
               <Container className={styles.textWapper}>
                 <Typography>Выберите репозитарий</Typography>

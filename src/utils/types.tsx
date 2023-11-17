@@ -44,10 +44,9 @@ export interface ISortedData {
     id: string; // Уникальный идентификатор репозитория
     name: string; // Имя репозитория
     language: string | null; // Основной язык программирования репозитория
-    forksNumber: number; // Количество форков репозитория
-    starsNumber: number; // Количество звезд у репозитория
+    forks: number; // Количество форков репозитория
+    stars: number; // Количество звезд у репозитория
     date: string; // Дата последнего обновления репозитория
-    cursor: string; // Курсор для пагинации
 }
 
 // IRepositoriesState - интерфейс для описания состояния хранилища репозиториев
