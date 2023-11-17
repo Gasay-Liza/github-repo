@@ -22,7 +22,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { fetchPublicRepositories } from "../../app/repositoriesSlice";
 import { RootState } from "../../app/store";
 // Импортирование типов, относящихся к Redux
-import { IEdge, ISortedData } from "../../utils/types";
+import { IEdge, ISortedData, Order } from "../../utils/types";
 // Импортирование кастомных компонентов, созданных для данного приложения
 import RepoRow from "../RepoRow/RepoRow";
 import TableHeader from "../TableHeader/TableHeader";
@@ -54,13 +54,17 @@ export default function BasicTable() {
   const [order, setOrder] = useState<Order>("asc");
   // Состояние компонента, которое хранит поле для сортировки
   const [orderBy, setOrderBy] = useState<keyof ISortedData>("name");
-
+// query: $query in:name sort:name-desc
+// query: $query in:name sort:stars-desc
+// query: $query in:name sort:language-desc
+// query: $query in:name sort:forks-desc
+// query: $query in:name sort:date-desc
   // Загрузка репозиториев при обновлении поискового запроса
   useEffect(() => {
     dispatch(
       fetchPublicRepositories({
         first: 10,
-        query: searchTerm || "",
+        query: `${searchTerm} in:name sort:${order}-${orderBy}` || "",
         after: data?.pageInfo.endCursor,
       })
     );
@@ -138,20 +142,6 @@ export default function BasicTable() {
                   orderBy={orderBy}
                   createSortHandler={createSortHandler}
                 />
-                {/* {data?.edges.map((repo: IEdge) => (
-        <TableRow
-          key={repo.node.name}
-          sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-        >
-          <TableCell component="th" scope="row">
-            {repo.node.name}
-          </TableCell>
-          <TableCell>{repo.node.primaryLanguage?.name}</TableCell>
-          <TableCell>{repo.node.forkCount}</TableCell>
-          <TableCell>{repo.node.stargazerCount}</TableCell>
-          <TableCell>{formatDate(repo.node.updatedAt)}</TableCell>
-        </TableRow>
-      ))} */}
                 <TableBody>
                 {data?.edges.map(
                       (repo: IEdge) => (

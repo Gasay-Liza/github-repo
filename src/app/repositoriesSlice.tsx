@@ -15,9 +15,8 @@ const decodedToken = encodedToken.replaceAll("?", "");
 // query: $query in:name sort:forks-desc
 // query: $query in:name sort:date-desc
 const query = `
-query ($query: String!, $first: Int, $last: Int, $after: String, $before: String, $sort: String, 
-  $direction: String){
-  search(type: REPOSITORY,  query:  $query in:name sort:$sort-$, first: $first, last: $last, after: $after, before: $before) {
+query ($query: String!, $first: Int, $last: Int, $after: String, $before: String, ){
+  search(type: REPOSITORY,  query:$query, first: $first, last: $last, after: $after, before: $before) {
     repositoryCount,
     pageInfo {
       startCursor

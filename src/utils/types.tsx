@@ -89,3 +89,6 @@ export interface HeadCell {
     id: keyof ISortedData; // Уникальный идентификатор заголовка
     label: string; // Название заголовка
 } 
+
+// Тип "Order" определяет возможные направления сортировки: 'asc' для возрастания и 'desc' для убывания.
+export type Order = 'asc' | 'desc';
