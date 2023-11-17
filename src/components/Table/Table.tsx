@@ -64,12 +64,12 @@ export default function BasicTable() {
     dispatch(
       fetchPublicRepositories({
         first: 10,
-        query: `${searchTerm} in:name sort:${order}-${orderBy}` || "",
+        query:`${searchTerm} in:name sort:${order}-${orderBy}` || "",
         after: data?.pageInfo.endCursor,
       })
     );
     dispatch(setPage(0));
-  }, [searchTerm, fetchPublicRepositories]);
+  }, [searchTerm]);
 
   // Обработка потенциальных состояний компонента
   if (loading) {
@@ -128,6 +128,11 @@ export default function BasicTable() {
   const createSortHandler =
     (property: keyof ISortedData) => (event: React.MouseEvent<unknown>) => {
       handleRequestSort(event, property);
+      fetchPublicRepositories({
+        first: 10,
+        query: `${searchTerm} in:name sort:${order}-${orderBy}` || "",
+        after: data?.pageInfo.endCursor,
+      })
     };
 
   return (

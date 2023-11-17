@@ -65,7 +65,7 @@ export interface IRepositoriesState {
 // Начальное состояние хранилища репозиториев.
 export const initialState: IRepositoriesState = {
     isSearchActive: false,
-    searchTerm: "",
+    searchTerm: "к",
     data: null,
     loading: false,
     error: null,
