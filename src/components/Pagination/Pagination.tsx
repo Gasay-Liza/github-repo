@@ -18,7 +18,12 @@ function Pagination() {
     const page = useSelector((state: RootState) => state.pagination.page);
     const rowsPerPage = useSelector((state: RootState) => state.pagination.rowsPerPage);
     const hasNextPage = useSelector((state: RootState) => state.data.hasNextPage);
-
+    const order = useSelector(
+        (state: RootState) => state.data.order
+      );
+      const orderBy = useSelector(
+        (state: RootState) => state.data.orderBy
+      );
 
     // handleChangePage обрабатывает изменения в пагинаторе, обновляя текущую выбранную страницу
     const handleChangePage = (
@@ -26,11 +31,11 @@ function Pagination() {
         newPage: number
     ) => {
         if (newPage < page) {
-            dispatch(fetchPublicRepositories({ last: rowsPerPage, query: searchTerm || "", before: data?.pageInfo.startCursor }));
+            dispatch(fetchPublicRepositories({ last: rowsPerPage, query:`${searchTerm} in:name sort:${order}-${orderBy}` || "", before: data?.pageInfo.startCursor }));
         }
             
         else if (hasNextPage) {
-            dispatch(fetchPublicRepositories({ first: rowsPerPage, query: searchTerm || "", after:data?.pageInfo.endCursor }));
+            dispatch(fetchPublicRepositories({ first: rowsPerPage, query:`${searchTerm} in:name sort:${order}-${orderBy}` || "", after:data?.pageInfo.endCursor }));
         }
         // Обновляем номер текущей страницы
         dispatch(setPage(newPage));
@@ -42,7 +47,7 @@ function Pagination() {
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         const newRowsPerPage = parseInt(event.target.value, 10); // Получаем новое значение из ввода пользователя
-        dispatch(fetchPublicRepositories({ first: newRowsPerPage, query: searchTerm || ""}));
+        dispatch(fetchPublicRepositories({ first: newRowsPerPage, query:`${searchTerm} in:name sort:${order}-${orderBy}` || ""}));
         // Обновляем значение строк на странице
         dispatch(setRowsPerPage(newRowsPerPage));
     };

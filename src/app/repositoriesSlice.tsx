@@ -3,6 +3,8 @@ import {
   initialState,
   IRepository,
   QueryVariables,
+  ISortedData,
+  Order
 } from "../utils/types";
 
 const encodedToken = "ghp_iX?xVjEjw?uw1Xl?wtn?4dvnH?C1eK3tC8w1?VndaJ";
@@ -99,6 +101,12 @@ export const repositoriesSlice = createSlice({
     setIsSearchActive: (state, action: PayloadAction<boolean>) => {
       state.isSearchActive = action.payload;
     },
+    setOrder: (state, action: PayloadAction<Order>) => {
+      state.order = action.payload;
+    },
+    setOrderBy: (state, action: PayloadAction<keyof ISortedData>) => {
+      state.orderBy = action.payload;
+    },
   },
   extraReducers: (builder) => {
     /* eslint-disable no-param-reassign */
@@ -132,6 +140,6 @@ export const repositoriesSlice = createSlice({
   /* eslint-enable no-param-reassign */
 });
 
-export const { setSearchTerm, setHasNextPage, setIsSearchActive } =
+export const { setSearchTerm, setHasNextPage, setIsSearchActive, setOrder, setOrderBy } =
   repositoriesSlice.actions;
 export default repositoriesSlice.reducer;

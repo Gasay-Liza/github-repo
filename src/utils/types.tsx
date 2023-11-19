@@ -51,6 +51,8 @@ export interface ISortedData {
 
 // IRepositoriesState - интерфейс для описания состояния хранилища репозиториев
 export interface IRepositoriesState {
+    order: Order,
+    orderBy: keyof ISortedData,
     isSearchActive: boolean,
     searchTerm: string, // Поисковый запрос
     data: IRepository | null, // Данные репозиториев
@@ -64,6 +66,8 @@ export interface IRepositoriesState {
 
 // Начальное состояние хранилища репозиториев.
 export const initialState: IRepositoriesState = {
+    order: "asc",
+    orderBy: "name",
     isSearchActive: false,
     searchTerm: "к",
     data: null,

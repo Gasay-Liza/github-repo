@@ -19,10 +19,10 @@ import { StyledEngineProvider } from "@mui/material/styles";
 
 // Импортирование хуков, переменных и функций, относящихся к Redux
 import { useAppDispatch } from "../../app/hooks";
-import { fetchPublicRepositories } from "../../app/repositoriesSlice";
+import { fetchPublicRepositories, setOrder, setOrderBy  } from "../../app/repositoriesSlice";
 import { RootState } from "../../app/store";
 // Импортирование типов, относящихся к Redux
-import { IEdge, ISortedData, Order } from "../../utils/types";
+import { IEdge, ISortedData } from "../../utils/types";
 // Импортирование кастомных компонентов, созданных для данного приложения
 import RepoRow from "../RepoRow/RepoRow";
 import TableHeader from "../TableHeader/TableHeader";
@@ -46,14 +46,17 @@ export default function BasicTable() {
   const isSearchActive = useSelector(
     (state: RootState) => state.data.isSearchActive
   );
+  const order = useSelector(
+    (state: RootState) => state.data.order
+  );
+  const orderBy = useSelector(
+    (state: RootState) => state.data.orderBy
+  );
   // Состояние компонента, которое хранит состояние поиска
 
   // Состояние компонента, которое хранит выбранный репозиторий
   const [selectedRepo, setSelectedRepo] = useState<IEdge | null>(null);
   // Состояние компонента, которое хранит порядок сортировки
-  const [order, setOrder] = useState<Order>("asc");
-  // Состояние компонента, которое хранит поле для сортировки
-  const [orderBy, setOrderBy] = useState<keyof ISortedData>("name");
 // query: $query in:name sort:name-desc
 // query: $query in:name sort:stars-desc
 // query: $query in:name sort:language-desc
@@ -69,7 +72,7 @@ export default function BasicTable() {
       })
     );
     dispatch(setPage(0));
-  }, [searchTerm]);
+  }, [searchTerm, order]);
 
   // Обработка потенциальных состояний компонента
   if (loading) {
@@ -122,17 +125,14 @@ export default function BasicTable() {
     property: keyof ISortedData
   ) => {
     const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
+    console.log(isAsc )
+    dispatch(setOrder(isAsc ? "desc" : "asc"));
+    dispatch(setOrderBy(property));
   };
   const createSortHandler =
     (property: keyof ISortedData) => (event: React.MouseEvent<unknown>) => {
+      console.log("@@@@")
       handleRequestSort(event, property);
-      fetchPublicRepositories({
-        first: 10,
-        query: `${searchTerm} in:name sort:${order}-${orderBy}` || "",
-        after: data?.pageInfo.endCursor,
-      })
     };
 
   return (
@@ -160,7 +160,7 @@ export default function BasicTable() {
                     )}
                 </TableBody>
               </Table>
-              <Pagination />
+              <Pagination/>
             </TableContainer>
             
             {!selectedRepo && (
