@@ -67,12 +67,22 @@ export default function BasicTable() {
     dispatch(
       fetchPublicRepositories({
         first: 10,
-        query:`${searchTerm} in:name sort:${order}-${orderBy}` || "",
+        query:`${searchTerm} in:name sort:${orderBy}-${order}` || "",
         after: data?.pageInfo.endCursor,
       })
     );
     dispatch(setPage(0));
-  }, [searchTerm, order]);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    dispatch(
+      fetchPublicRepositories({
+        first: 10,
+        query:`${searchTerm} in:name sort:${orderBy}-${order}` || "",
+      })
+    );
+    dispatch(setPage(0));
+  }, [order]);
 
   // Обработка потенциальных состояний компонента
   if (loading) {

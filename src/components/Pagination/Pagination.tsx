@@ -31,11 +31,11 @@ function Pagination() {
         newPage: number
     ) => {
         if (newPage < page) {
-            dispatch(fetchPublicRepositories({ last: rowsPerPage, query:`${searchTerm} in:name sort:${order}-${orderBy}` || "", before: data?.pageInfo.startCursor }));
+            dispatch(fetchPublicRepositories({ last: rowsPerPage, query:`${searchTerm} in:name sort:${orderBy}-${order}` || "", before: data?.pageInfo.startCursor }));
         }
             
         else if (hasNextPage) {
-            dispatch(fetchPublicRepositories({ first: rowsPerPage, query:`${searchTerm} in:name sort:${order}-${orderBy}` || "", after:data?.pageInfo.endCursor }));
+            dispatch(fetchPublicRepositories({ first: rowsPerPage, query:`${searchTerm} in:name sort:${orderBy}-${order}` || "", after:data?.pageInfo.endCursor }));
         }
         // Обновляем номер текущей страницы
         dispatch(setPage(newPage));
@@ -47,7 +47,7 @@ function Pagination() {
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         const newRowsPerPage = parseInt(event.target.value, 10); // Получаем новое значение из ввода пользователя
-        dispatch(fetchPublicRepositories({ first: newRowsPerPage, query:`${searchTerm} in:name sort:${order}-${orderBy}` || ""}));
+        dispatch(fetchPublicRepositories({ first: newRowsPerPage, query:`${searchTerm} in:name sort:${orderBy}-${order}` || ""}));
         // Обновляем значение строк на странице
         dispatch(setRowsPerPage(newRowsPerPage));
     };
