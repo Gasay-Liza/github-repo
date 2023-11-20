@@ -57,11 +57,6 @@ export default function BasicTable() {
   // Состояние компонента, которое хранит выбранный репозиторий
   const [selectedRepo, setSelectedRepo] = useState<IEdge | null>(null);
   // Состояние компонента, которое хранит порядок сортировки
-// query: $query in:name sort:name-desc
-// query: $query in:name sort:stars-desc
-// query: $query in:name sort:language-desc
-// query: $query in:name sort:forks-desc
-// query: $query in:name sort:date-desc
   // Загрузка репозиториев при обновлении поискового запроса
   useEffect(() => {
     dispatch(
@@ -124,7 +119,7 @@ export default function BasicTable() {
       label: "Число звезд",
     },
     {
-      id: "date",
+      id: "updated",
       label: "Дата обновления",
     },
   ];
@@ -135,13 +130,11 @@ export default function BasicTable() {
     property: keyof ISortedData
   ) => {
     const isAsc = orderBy === property && order === "asc";
-    console.log(isAsc )
     dispatch(setOrder(isAsc ? "desc" : "asc"));
     dispatch(setOrderBy(property));
   };
   const createSortHandler =
     (property: keyof ISortedData) => (event: React.MouseEvent<unknown>) => {
-      console.log("@@@@")
       handleRequestSort(event, property);
     };
 
