@@ -43,6 +43,7 @@ export default function BasicTable() {
   const loading = useSelector((state: RootState) => state.data.loading);
   const error = useSelector((state: RootState) => state.data.error);
   const searchTerm = useSelector((state: RootState) => state.data.searchTerm);
+  const rowsPerPage = useSelector((state: RootState) => state.pagination.rowsPerPage);
   const isSearchActive = useSelector(
     (state: RootState) => state.data.isSearchActive
   );
@@ -61,7 +62,7 @@ export default function BasicTable() {
   useEffect(() => {
     dispatch(
       fetchPublicRepositories({
-        first: 10,
+        first: rowsPerPage,
         query:`${searchTerm} in:name sort:${orderBy}-${order}` || "",
         after: data?.pageInfo.endCursor,
       })
@@ -72,7 +73,7 @@ export default function BasicTable() {
   useEffect(() => {
     dispatch(
       fetchPublicRepositories({
-        first: 10,
+        first: rowsPerPage,
         query:`${searchTerm} in:name sort:${orderBy}-${order}` || "",
       })
     );
