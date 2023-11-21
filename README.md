@@ -1,6 +1,6 @@
 # React приложение для поиска Github репозиториев
 ### Gh-pages
-[Ссылка на деплой](gasay-liza.github.io/github-repo/)
+[Ссылка на деплой](https://gasay-liza.github.io/github-repo/)
 
 ## Функциональность
 
